@@ -1,7 +1,8 @@
-//Include SDL functions and datatypes
+#ifndef GRAFICADOR_H
+#define GRAFICADOR_H
+
 #include "SDL.h"
 #include <vector>
-#include <iostream>
 
 using namespace std;
 //TODO agregar constructor con parametros, tiene que recibir el vector de valores
@@ -9,20 +10,14 @@ class Graficador {
 		int posicionEjeX, posicionEjeY, nroParticionesDeX;
 		SDL_Renderer* renderer;
 		SDL_Window* window;
-		std::vector<int> valores;
+		std::vector<double> valores;
 		SDL_bool done;
 	public:
 		Graficador() {
 			posicionEjeX = 0;
 			posicionEjeY = 700;
-			nroParticionesDeX = 16;
 			window = NULL;
 			renderer = NULL;
-			for (int i = 0; i < 100; ++i)
-		    {
-		        int v2 = rand() % 10 + 0; 
-		         valores.push_back(v2);
-		    }
 		}
 
 		void init() {//TODO definir mejor que hace
@@ -31,7 +26,9 @@ class Graficador {
 			done = SDL_FALSE;
 		}
 
-		void graficar() {
+		void graficar(vector<double> v) {
+			valores = v;
+			nroParticionesDeX = v.size();
 			
 			int pixelesPorParticion= (1024 / nroParticionesDeX);
 			int multValorY = 40;
@@ -47,9 +44,8 @@ class Graficador {
 //TODO pasar a funcion------------------------------
 			    for (int i = 0; i < valores.size()-1; ++i)
 			    {
-			        int v1 = valores.at(i);
-			        int v2 = valores.at(i+1);
-			        cout << v2 << endl;
+			        double v1 = valores.at(i);
+			        double v2 = valores.at(i+1);
 			        SDL_RenderDrawLine(renderer, 
 			            posicionEjeX+i*pixelesPorParticion,                    posicionEjeY, 
 			            posicionEjeX+i*pixelesPorParticion,                    posicionEjeY-(v1*multValorY));
@@ -85,12 +81,4 @@ class Graficador {
 		
 };
 
- int main(int argc, char const *argv[])
-{
-	/* code */
-	Graficador gr;
-	gr.init();
-	gr.graficar();
-
-	return 0;
-}
+#endif
