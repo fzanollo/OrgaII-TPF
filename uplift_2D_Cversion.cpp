@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <vector>
 #include <string.h>
+#include "graficador.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of p
 	yMax: altura maxima de los picos
 	steepness: ?
 */
-int divisions=10;
+int divisions=10; //TODO?: hacer que no sean globales 
 int nroPeaks = 4;
 int yMin = 1;
 int yMax = 10;
@@ -43,39 +44,17 @@ void getParameters(){
 	cin >> yMax;
 }
 
-int main(int argc, char const *argv[])
-{
-	if (argc <= 1){
-		cout << ERROR_MESSAGE;
-		return 0;
-	}
-
-	bool interactive = (strcmp(argv[1], "i") == 0);
-
-	if (interactive){
-		getParameters();
-	} else{
-		if(argc >= 5) {
-			divisions = atoi(argv[1]);
-			nroPeaks = atoi(argv[2]);
-			yMin = atoi(argv[3]);
-			yMax = atoi(argv[4]);
-		}
-		else {
-			cout << ERROR_MESSAGE;
-		}
-	}
-
+vector<double> upliftTerrainGenerator(){
 	// initialize random seed:
   	srand (time(NULL));
 
 	//Terrain
-	double terrain[divisions];
+	vector<double> terrain;
 
 	//They all start in 0
 	for (int i = 0; i < divisions; ++i)
 	{
-		terrain[i] = 0;
+		terrain.push_back(0);
 	}
 
 	// EXAMPLE
@@ -103,7 +82,7 @@ int main(int argc, char const *argv[])
 		peaksSize[i] = size; 
 	}
 
-	//FOR DEBUGGING
+	//FOR DEBUGGING //TODO mostrar solo si esta en modo verbose
 	cout << "Peaks:" << endl;
 	for (int i = 0; i < nroPeaks; ++i)
 	{
@@ -148,6 +127,39 @@ int main(int argc, char const *argv[])
 		cout << terrain[i] << ", ";
 	}
 	cout << endl;
+
+	return terrain;
+}
+
+int main(int argc, char const *argv[])
+{
+	if (argc <= 1){
+		cout << ERROR_MESSAGE;
+		return 0;
+	}
+
+	bool interactive = (strcmp(argv[1], "i") == 0);
+
+	if (interactive){
+		getParameters();
+	} else{
+		if(argc >= 5) {
+			divisions = atoi(argv[1]);
+			nroPeaks = atoi(argv[2]);
+			yMin = atoi(argv[3]);
+			yMax = atoi(argv[4]);
+		}
+		else {
+			cout << ERROR_MESSAGE;
+		}
+	}
+
+	/* --------------------------- */
+
+	vector<double> terrain = upliftTerrainGenerator();
+	Graficador gr;
+	gr.init();
+	gr.graficar(terrain);
 
 	return 0;
 }
