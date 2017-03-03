@@ -2,7 +2,9 @@
 #include <cstdlib>
 #include <vector>
 #include <string.h>
-#include "graficador.h"
+//#include "graficador.h"
+
+extern "C" int fun( short int* matrix, int rows, int cols);
 
 using namespace std;
 
@@ -90,40 +92,30 @@ vector<double> upliftTerrainGenerator(){
 	}
 
 	//AVG
-	for (int i = 0; i < divisions; ++i)
-	{
-		unsigned short int sum = 0;
-		int cant = 0;
+	 short int influencia[nroPeaks][divisions];
 
-		for (int p = 0; p < nroPeaks; ++p)
+	for (int i = 0; i < nroPeaks; ++i)
+	{
+		for (int j = 0; j < divisions; ++j)
 		{
-			unsigned short int influence;
-			if (peaksSize[p] > abs(peaksPos[p] - i)){
-				influence = peaksSize[p] - abs(peaksPos[p] - i);
-			} else {
+
+			 short int influence = peaksSize[i] - abs(peaksPos[i] - j);
+
+			if(influence < 0) {
 				influence = 0;
 			}
-
-			if (influence > 0)
-			{
-				cant++;
-				sum += influence;
-			}
+			influencia[i][j] = influence;
+			cout << " + " << influencia[i][j];
 		}
-
-		/* el tema era entre que hacer el avg, aca lo hacemos entre:
-			si no hay influencia de nadie => el valor es 0
-			si solo hay influencia de una montaña => 2 (piso y montaña)
-			cc (influencia de mas de una montaña) => cant de montañas
-		 */
-		if (cant==0) 
-		{
-			terrain[i] = 0;
-		}
-		else{
-			terrain[i] = (cant==1) ? sum / 2 : sum / cant;
-		}
+		cout << endl;
 	}
+
+	fun(( short int*)influencia, nroPeaks, divisions);
+	for (int i = 0; i < divisions; ++i)
+	{
+		cout << " * " << influencia[0][i] ;
+	}
+	cout << endl;
 
 	//PRINT RESULTS
 	cout << "Terrain: "<<endl;
@@ -162,9 +154,9 @@ int main(int argc, char const *argv[])
 	/* --------------------------- */
 
 	vector<double> terrain = upliftTerrainGenerator();
-	Graficador gr;
+	/*Graficador gr;
 	gr.init();
 	gr.graficar(terrain);
-
+*/
 	return 0;
 }
