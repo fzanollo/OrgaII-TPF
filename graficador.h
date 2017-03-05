@@ -26,7 +26,7 @@ class Graficador {
 			done = SDL_FALSE;
 		}
 
-		void graficar(vector<double> v) {
+		void graficar(vector<float> v) {
 			valores = v;
 			nroParticionesDeX = v.size();
 			
@@ -44,8 +44,8 @@ class Graficador {
 //TODO pasar a funcion------------------------------
 			    for (int i = 0; i < valores.size()-1; ++i)
 			    {
-			        double v1 = valores.at(i);
-			        double v2 = valores.at(i+1);
+			        float v1 = valores.at(i);
+			        float v2 = valores.at(i+1);
 			        SDL_RenderDrawLine(renderer, 
 			            posicionEjeX+i*pixelesPorParticion,                    posicionEjeY, 
 			            posicionEjeX+i*pixelesPorParticion,                    posicionEjeY-(v1*multValorY));

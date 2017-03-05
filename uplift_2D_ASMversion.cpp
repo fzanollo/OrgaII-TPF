@@ -4,7 +4,7 @@
 #include <string.h>
 //#include "graficador.h"
 
-extern "C" int fun( short int* matrix, int rows, int cols);
+extern "C" int fun( float* matrix, int rows, int cols);
 
 using namespace std;
 
@@ -46,12 +46,12 @@ void getParameters(){
 	cin >> yMax;
 }
 
-vector<double> upliftTerrainGenerator(){
+vector<float> upliftTerrainGenerator(){
 	// initialize random seed:
   	srand (time(NULL));
 
 	//Terrain
-	vector<double> terrain;
+	vector<float> terrain;
 
 	//They all start in 0
 	for (int i = 0; i < divisions; ++i)
@@ -63,8 +63,8 @@ vector<double> upliftTerrainGenerator(){
 	// int peaksPos[nroPeaks] = {2, 6};
 	// int peaksSize[nroPeaks] = {2, 4};
 
-	int peaksPos[nroPeaks] = {};
-	int peaksSize[nroPeaks] = {};
+	int peaksPos[nroPeaks];
+	int peaksSize[nroPeaks];
 
 	vector<int> positions;
 
@@ -92,14 +92,14 @@ vector<double> upliftTerrainGenerator(){
 	}
 
 	//AVG
-	 short int influencia[nroPeaks][divisions];
+	 float influencia[nroPeaks][divisions];
 
 	for (int i = 0; i < nroPeaks; ++i)
 	{
 		for (int j = 0; j < divisions; ++j)
 		{
 
-			 short int influence = peaksSize[i] - abs(peaksPos[i] - j);
+			 float influence = peaksSize[i] - abs(peaksPos[i] - j);
 
 			if(influence < 0) {
 				influence = 0;
@@ -110,7 +110,9 @@ vector<double> upliftTerrainGenerator(){
 		cout << endl;
 	}
 
-	fun(( short int*)influencia, nroPeaks, divisions);
+	cout<<endl;
+
+	fun(( float*)influencia, nroPeaks, divisions);
 	for (int i = 0; i < divisions; ++i)
 	{
 		cout << " * " << influencia[0][i] ;
@@ -153,10 +155,10 @@ int main(int argc, char const *argv[])
 
 	/* --------------------------- */
 
-	vector<double> terrain = upliftTerrainGenerator();
-	/*Graficador gr;
-	gr.init();
-	gr.graficar(terrain);
-*/
+	vector<float> terrain = upliftTerrainGenerator();
+	// Graficador gr;
+	// gr.init();
+	// gr.graficar(terrain);
+	
 	return 0;
 }

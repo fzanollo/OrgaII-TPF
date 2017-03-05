@@ -44,12 +44,12 @@ void getParameters(){
 	cin >> yMax;
 }
 
-vector<double> upliftTerrainGenerator(){
+vector<float> upliftTerrainGenerator(){
 	// initialize random seed:
   	srand (time(NULL));
 
 	//Terrain
-	vector<double> terrain;
+	vector<float> terrain;
 
 	//They all start in 0
 	for (int i = 0; i < divisions; ++i)
@@ -61,8 +61,8 @@ vector<double> upliftTerrainGenerator(){
 	// int peaksPos[nroPeaks] = {2, 6};
 	// int peaksSize[nroPeaks] = {2, 4};
 
-	int peaksPos[nroPeaks] = {};
-	int peaksSize[nroPeaks] = {};
+	int peaksPos[nroPeaks];
+	int peaksSize[nroPeaks];
 
 	vector<int> positions;
 
@@ -92,12 +92,12 @@ vector<double> upliftTerrainGenerator(){
 	//AVG
 	for (int i = 0; i < divisions; ++i)
 	{
-		unsigned short int sum = 0;
+		float sum = 0;
 		int cant = 0;
 
 		for (int p = 0; p < nroPeaks; ++p)
 		{
-			unsigned short int influence;
+			float influence;
 			if (peaksSize[p] > abs(peaksPos[p] - i)){
 				influence = peaksSize[p] - abs(peaksPos[p] - i);
 			} else {
@@ -161,7 +161,7 @@ int main(int argc, char const *argv[])
 
 	/* --------------------------- */
 
-	vector<double> terrain = upliftTerrainGenerator();
+	vector<float> terrain = upliftTerrainGenerator();
 	Graficador gr;
 	gr.init();
 	gr.graficar(terrain);

@@ -1,7 +1,7 @@
 global fun
 
-%define tam_short 2
-%define pack_size 8
+%define tam_elem 4
+%define pack_size 4
 
 section .text
 
@@ -20,6 +20,17 @@ push r15
 ;rsi = rows
 ;rdx = cols
 
+mov r12, 1
+vmovq xmm10, r12
+movaps xmm1,xmm10
+PUNPCKLDQ xmm10,xmm1
+movaps xmm1,xmm10
+PUNPCKLDQ xmm10,xmm1
+movaps xmm1,xmm10
+PUNPCKLDQ xmm10,xmm1
+
+XORPD xmm11, xmm11 ; xmm11 tiene todos 0s (lo uso para comparar)
+
 mov r9, 0
 .cols:
 	;se hace algo
@@ -35,11 +46,15 @@ mov r9, 0
 		mov r11, r8
 		imul r11, rdx
 		add r10, r11
-		imul r10, tam_short
-		; r10 = (i_row * cols + i_col) * tam_short
+		imul r10, tam_elem
+		; r10 = (i_row * cols + i_col) * tam_elem
 
-		movdqa xmm2, [rdi + r10]
-		movdqa xmm3, xmm0
+		movdqa xmm2, [rdi + r10] ; xmm2 influencia
+		movdqa xmm3, xmm2 ; xmm3 para cant montanias
+
+		;en xmm3 dejo 1 si hay montania 0 si no
+		cmpps xmm3, xmm11, 4 ; xmm3= en cada float: 1111 1111 si > 0, 0s cc
+		psrld xmm3, 31 ; xmm3= en cada float: 1 si > 0, 0 cc
 
 		;siguiente fila de elems
 		inc r8
@@ -47,28 +62,40 @@ mov r9, 0
 		mov r11, r8
 		imul r11, rdx
 		add r10, r11
-		imul r10, tam_short
+		imul r10, tam_elem
 
-		movdqa xmm4, [rdi + r10]
-		movdqa xmm5, xmm2
+		movdqa xmm4, [rdi + r10] ; xmm4 influencia
+		movdqa xmm5, xmm4 ; xmm5 para cant montanias
 
-		;datos obtenidos
+		;en xmm5 dejo 1 si hay montania 0 si no
+		cmpps xmm5, xmm11, 4 ; xmm5= en cada float: 1111 1111 si > 0, 0s cc
+		
+
+		;DEBUG
+		movdqa xmm1, xmm5
+
+		;Datos obtenidos
 		;suma de influencias
-		paddw xmm2, xmm4
-		;contar cant de montanias
+		addps xmm2, xmm4
+
+		;suma de montanias
+		addps xmm3, xmm5
 
 		;agregar todo a los acumuladores
 		;xmm0 para influencia
-		PADDW xmm0, xmm2 
+		addps xmm0, xmm2 
 		;xmm1 para cant montanias
-		PADDW xmm1, xmm3 
+		; addps xmm1, xmm3 
 
 		;ir al sig:
 		inc r8
 		cmp r8, rsi
 		jne .rows
-	;hacer la cuenta y guardarlo
-	movdqa [rdi + r9 * tam_short], xmm0
+
+	;calculo final del terreno (influencia/cant picos)
+
+	movdqa [rdi + r9 * tam_elem], xmm10
+
 	;ir al sig:
 	add r9, pack_size
 	cmp r9, rdx
