@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <vector>
 #include <string.h>
-//#include "graficador.h"
+#include "graficador.h"
 
 extern "C" int fun( float* matrix, int rows, int cols);
 
@@ -53,12 +53,6 @@ vector<float> upliftTerrainGenerator(){
 	//Terrain
 	vector<float> terrain;
 
-	//They all start in 0
-	for (int i = 0; i < divisions; ++i)
-	{
-		terrain.push_back(0);
-	}
-
 	// EXAMPLE
 	// int peaksPos[nroPeaks] = {2, 6};
 	// int peaksSize[nroPeaks] = {2, 4};
@@ -90,16 +84,16 @@ vector<float> upliftTerrainGenerator(){
 	{
 		cout << "  position " << peaksPos[i] << " size " << peaksSize[i] << endl;
 	}
+	//--------------------
 
 	//AVG
-	 float influencia[nroPeaks][divisions];
+	float influencia[nroPeaks][divisions];
 
 	for (int i = 0; i < nroPeaks; ++i)
 	{
 		for (int j = 0; j < divisions; ++j)
 		{
-
-			 float influence = peaksSize[i] - abs(peaksPos[i] - j);
+			float influence = peaksSize[i] - abs(peaksPos[i] - j);
 
 			if(influence < 0) {
 				influence = 0;
@@ -109,15 +103,18 @@ vector<float> upliftTerrainGenerator(){
 		}
 		cout << endl;
 	}
-
 	cout<<endl;
 
 	fun(( float*)influencia, nroPeaks, divisions);
+
+	//change output of fun...ponele
 	for (int i = 0; i < divisions; ++i)
 	{
+		terrain.push_back(influencia[0][i]);
 		cout << " * " << influencia[0][i] ;
 	}
 	cout << endl;
+	//--------------------
 
 	//PRINT RESULTS
 	cout << "Terrain: "<<endl;
@@ -156,9 +153,9 @@ int main(int argc, char const *argv[])
 	/* --------------------------- */
 
 	vector<float> terrain = upliftTerrainGenerator();
-	// Graficador gr;
-	// gr.init();
-	// gr.graficar(terrain);
+	Graficador gr;
+	gr.init();
+	gr.graficar(terrain);
 	
 	return 0;
 }

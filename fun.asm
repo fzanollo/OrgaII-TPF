@@ -86,9 +86,9 @@ mov r9, 0
 		cmp r8, rsi
 		jne .rows
 
-	;calculo final del terreno (influencia/cant picos)
-
-	movdqa [rdi + r9 * tam_elem], xmm1
+	;calculo final del terreno (influencia/cant picos == xmm0/xmm1)
+	divps xmm0, xmm1
+	movdqa [rdi + r9 * tam_elem], xmm0
 
 	;ir al sig:
 	add r9, pack_size
