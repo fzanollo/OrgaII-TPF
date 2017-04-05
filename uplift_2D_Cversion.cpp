@@ -45,9 +45,6 @@ void getParameters(){
 }
 
 vector<float> upliftTerrainGenerator(){
-	// initialize random seed:
-  	srand (time(NULL));
-
 	//Terrain
 	vector<float> terrain;
 
@@ -74,7 +71,6 @@ vector<float> upliftTerrainGenerator(){
 			position = rand() % divisions;
 		}
 		positions.push_back(position);
-		// int position = rand() % divisions;
 
 		int size = rand() % (yMax-yMin+1) + yMin; //in the range [yMin, yMax]
 
@@ -138,6 +134,9 @@ vector<float> upliftTerrainGenerator(){
 
 int main(int argc, char const *argv[])
 {
+	// initialize seed
+	srand(time(NULL));
+
 	if (argc <= 1){
 		cout << ERROR_MESSAGE;
 		return 0;
@@ -153,6 +152,12 @@ int main(int argc, char const *argv[])
 			nroPeaks = atoi(argv[2]);
 			yMin = atoi(argv[3]);
 			yMax = atoi(argv[4]);
+
+			//set custom seed
+			if(argc == 6){
+				srand(atoi(argv[5]));
+				cout << "seed is: " << atoi(argv[5]);
+			}
 		}
 		else {
 			cout << ERROR_MESSAGE;
@@ -165,6 +170,6 @@ int main(int argc, char const *argv[])
 	Graficador gr;
 	gr.init();
 	gr.graficar(terrain);
-
+	
 	return 0;
 }

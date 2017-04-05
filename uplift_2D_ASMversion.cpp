@@ -8,7 +8,7 @@ extern "C" int fun( float* matrix, int rows, int cols);
 
 using namespace std;
 
-const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of parameters is:\n		divisions, nroPeaks, yMin, yMax \nYou can also set it to be interactive with an 'i'\n";
+const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of parameters is:\n	divisions, nroPeaks, yMin, yMax, seed (optional) \nYou can also set it to be interactive with an 'i'\n";
 /*
 	divisions: cantidad de divisiones del espacio continuo (cantidad de x)
 	nroPeaks: cantidad de picos
@@ -16,7 +16,7 @@ const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of p
 	yMax: altura maxima de los picos
 	steepness: ?
 */
-int divisions=10; //TODO?: hacer que no sean globales b
+int divisions=10; //TODO?: hacer que no sean globales 
 int nroPeaks = 4;
 int yMin = 1;
 int yMax = 10;
@@ -47,9 +47,6 @@ void getParameters(){
 }
 
 vector<float> upliftTerrainGenerator(){
-	// initialize random seed:
-  	srand (time(NULL));
-
 	//Terrain
 	vector<float> terrain;
 
@@ -70,7 +67,6 @@ vector<float> upliftTerrainGenerator(){
 			position = rand() % divisions;
 		}
 		positions.push_back(position);
-		// int position = rand() % divisions;
 
 		int size = rand() % (yMax-yMin+1) + yMin; //in the range [yMin, yMax]
 
@@ -129,6 +125,9 @@ vector<float> upliftTerrainGenerator(){
 
 int main(int argc, char const *argv[])
 {
+	// initialize seed
+	srand(time(NULL));
+
 	if (argc <= 1){
 		cout << ERROR_MESSAGE;
 		return 0;
@@ -144,6 +143,12 @@ int main(int argc, char const *argv[])
 			nroPeaks = atoi(argv[2]);
 			yMin = atoi(argv[3]);
 			yMax = atoi(argv[4]);
+
+			//set custom seed
+			if(argc >= 6){
+				srand(atoi(argv[5]));
+				cout << "seed is: " << atoi(argv[5]) << endl;
+			}
 		}
 		else {
 			cout << ERROR_MESSAGE;
