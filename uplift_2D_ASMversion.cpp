@@ -16,7 +16,7 @@ const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of p
 	yMax: altura maxima de los picos
 	steepness: ?
 */
-int divisions=10; //TODO?: hacer que no sean globales 
+int divisions=10; //TODO?: hacer que no sean globales b
 int nroPeaks = 4;
 int yMin = 1;
 int yMax = 10;

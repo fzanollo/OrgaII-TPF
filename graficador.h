@@ -10,7 +10,7 @@ class Graficador {
 		int posicionEjeX, posicionEjeY, nroParticionesDeX;
 		SDL_Renderer* renderer;
 		SDL_Window* window;
-		std::vector<double> valores;
+		std::vector<float> valores;
 		SDL_bool done;
 	public:
 		Graficador() {
