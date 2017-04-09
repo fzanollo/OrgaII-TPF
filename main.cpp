@@ -49,11 +49,13 @@ int main(int argc, char const *argv[])
 
 			if(argc >= 6){
 				//set custom seed
-				srand(atoi(argv[5]));
+				seed = atoi(argv[5]);
 
 				if(argc >= 7){
 					debugging = ((strcmp(argv[6], "v") == 0));
 				}
+			} else{
+				seed = time(NULL);
 			}
 		}
 		else {
@@ -65,24 +67,24 @@ int main(int argc, char const *argv[])
 
 	UpliftTerrainGenerator2D_ASM asmVersion2d;
 	UpliftTerrainGenerator2D_C cVersion2d;
-	
-	if(debugging){
-		cout << "seed is: " << atoi(argv[5]) << endl;
-		cout << endl;
-		cout << "**********    2D C VERSION   **********" << endl;
-	}
-
-	vector<float> terrain = cVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging);
 	Graficador gr;
+	
+	cout << "seed is: " << seed << endl;
+	cout << endl;
+	cout << "**********    2D C VERSION   **********" << endl;
+
+	// CALCULO VERSION C
+	vector<float> terrain = cVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging);
+
 	gr.init();
 	gr.graficar(terrain);
 
-	if(debugging){
-		cout << endl;
-		cout << "**********    2D ASM VERSION   **********" << endl;
-	}
+	cout << endl;
+	cout << "**********    2D ASM VERSION   **********" << endl;
 
+	// CALCULO VERSION ASM
 	terrain = asmVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging);
+
 	gr.init();
 	gr.graficar(terrain);
 	
