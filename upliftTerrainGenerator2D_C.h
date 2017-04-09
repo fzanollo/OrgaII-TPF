@@ -1,7 +1,6 @@
 #ifndef UPLIFTTERRAINGENERATOR2D_C
 #define UPLIFTTERRAINGENERATOR2D_C
 
-#include <iostream>
 #include <cstdlib>
 #include <vector>
 #include "upliftTerrainGenerator2D.h"
@@ -17,23 +16,6 @@ using namespace std;
 */
 class UpliftTerrainGenerator2D_C: public UpliftTerrainGenerator2D {
 	void doTheMath(int divisions, int nroPeaks, int peaksPos [], int peaksSize []){
-		//DEBUG ++++++++++++++++++++++++++++++++
-		for (int a = 0; a < nroPeaks; ++a)
-		{
-			for (int b = 0; b < divisions; ++b)
-			{
-				float influence = peaksSize[a] - abs(peaksPos[a] - b);
-
-				if(influence < 0) {
-					influence = 0;
-				}
-				cout << " + " << influence;
-			}
-			cout << endl;
-		}
-		cout<<endl;
-		//+++++++++++++++++++++++++++++++++++++
-
 		for (int i = 0; i < divisions; ++i)
 		{
 			float influenceSum = 0;

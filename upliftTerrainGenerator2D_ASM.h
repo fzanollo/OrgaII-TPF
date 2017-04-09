@@ -1,7 +1,6 @@
 #ifndef UPLIFTTERRAINGENERATOR2D_ASM
 #define UPLIFTTERRAINGENERATOR2D_ASM
 
-#include <iostream>
 #include <cstdlib>
 #include <vector>
 #include "upliftTerrainGenerator2D.h"
@@ -31,11 +30,8 @@ class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 					influence = 0;
 				}
 				influencia[i][j] = influence;
-				cout << " + " << influencia[i][j];
 			}
-			cout << endl;
 		}
-		cout<<endl;
 
 		float terrainArray[divisions];
 

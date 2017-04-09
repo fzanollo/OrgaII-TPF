@@ -1,9 +1,11 @@
 #ifndef UPLIFTTERRAINGENERATOR2D
 #define UPLIFTTERRAINGENERATOR2D
 
+#include <iostream>
+
 class UpliftTerrainGenerator2D {
 	public:
-		vector<float> generateTerrain(int divisions, int nroPeaks, int yMin, int yMax, unsigned int seed){
+		vector<float> generateTerrain(int divisions, int nroPeaks, int yMin, int yMax, unsigned int seed, bool debugging){
 			//initialize random
 			srand(seed);
 
@@ -27,11 +29,13 @@ class UpliftTerrainGenerator2D {
 				peaksSize[i] = size; 
 			}
 
-			//FOR DEBUGGING //TODO mostrar solo si esta en modo verbose
-			cout << "Peaks:" << endl;
-			for (int i = 0; i < nroPeaks; ++i)
-			{
-				cout << "  position " << peaksPos[i] << " size " << peaksSize[i] << endl;
+			//FOR DEBUGGING
+			if(debugging){
+				cout << "Peaks:" << endl;
+				for (int i = 0; i < nroPeaks; ++i)
+				{
+					cout << "  position " << peaksPos[i] << " size " << peaksSize[i] << endl;
+				}
 			}
 			//--------------------
 
@@ -42,12 +46,14 @@ class UpliftTerrainGenerator2D {
 			//*********************
 
 			//FOR DEBUGGING: PRINT RESULTS
-			cout << "Terrain: "<<endl;
-			for (int i = 0; i < divisions; ++i)
-			{
-				cout << terrain[i] << ", ";
+			if(debugging){
+				cout << "Terrain: "<<endl;
+				for (int i = 0; i < divisions; ++i)
+				{
+					cout << terrain[i] << ", ";
+				}
+				cout << endl;
 			}
-			cout << endl;
 			//--------------------
 
 			return terrain;

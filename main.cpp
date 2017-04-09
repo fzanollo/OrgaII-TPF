@@ -6,7 +6,7 @@
 #include "upliftTerrainGenerator2D_C.h"
 #include "upliftTerrainGenerator2D_ASM.h"
 
-const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of parameters is:\n	divisions, nroPeaks, yMin, yMax, seed (optional) \nYou can also set it to be interactive with an 'i'\n";
+const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of parameters is:\n	divisions, nroPeaks, yMin, yMax, (seed (optional), 'v' if you want verbouse (only with custom seed)) \nYou can also set it to be interactive with an 'i'\n";
 
 using namespace std;
 
@@ -19,6 +19,7 @@ int main(int argc, char const *argv[])
 	int yMin = 1;
 	int yMax = 10;
 	//? steepness= ?;
+	bool debugging = false;
 
 	if (argc <= 1){
 		cout << ERROR_MESSAGE;
@@ -46,10 +47,13 @@ int main(int argc, char const *argv[])
 			yMin = atoi(argv[3]);
 			yMax = atoi(argv[4]);
 
-			//set custom seed
 			if(argc >= 6){
+				//set custom seed
 				srand(atoi(argv[5]));
-				cout << "seed is: " << atoi(argv[5]) << endl;
+
+				if(argc >= 7){
+					debugging = ((strcmp(argv[6], "v") == 0));
+				}
 			}
 		}
 		else {
@@ -62,18 +66,23 @@ int main(int argc, char const *argv[])
 	UpliftTerrainGenerator2D_ASM asmVersion2d;
 	UpliftTerrainGenerator2D_C cVersion2d;
 	
-	cout << endl;
+	if(debugging){
+		cout << "seed is: " << atoi(argv[5]) << endl;
+		cout << endl;
+		cout << "**********    2D C VERSION   **********" << endl;
+	}
 
-	cout << "**********    2D C VERSION   **********" << endl;
-	vector<float> terrain = cVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed);
+	vector<float> terrain = cVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging);
 	Graficador gr;
 	gr.init();
 	gr.graficar(terrain);
 
-	cout << endl;
+	if(debugging){
+		cout << endl;
+		cout << "**********    2D ASM VERSION   **********" << endl;
+	}
 
-	cout << "**********    2D ASM VERSION   **********" << endl;
-	terrain = asmVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed);
+	terrain = asmVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging);
 	gr.init();
 	gr.graficar(terrain);
 	
