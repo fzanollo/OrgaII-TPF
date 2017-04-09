@@ -5,7 +5,6 @@ section .data
 %define pack_size 4
 one: dd 1.0
 
-
 section .text
 
 fun:
@@ -23,6 +22,7 @@ push r15
 ;rdi = puntero a matrizPicos
 ;rsi = rows
 ;rdx = cols
+;rcx = puntero a terrainArray
 
 XORPD xmm10, xmm10
 movss xmm10, [one]
@@ -63,16 +63,26 @@ mov r9, 0
 		cmp r8, rsi
 		jne .rows
 
-	;fix por si no hay ningun pico en un lugar (no se puede div por cero)
+	; el tema era entre que hacer el avg, aca lo hacemos entre:
+	;	si no hay influencia de nadie => el valor es 0
+	;	si solo hay influencia de un pico => 2 (piso y pico)
+	;	cc (influencia de mas de un pico) => peaksSum de picos
+	; entonces debemos dividir por 1, 2, o cant de picos
 	movdqa xmm4, xmm1
-	cmpps xmm4, xmm11, 0 ; xmm4 = en cada float: 1..1 si == 0, 0s cc
+	cmpps xmm4, xmm10, 0 ; xmm4 = en cada float: 1..1 si == 1, 0s cc
 	pand xmm4, xmm10 ; xmm4 = en cada float: 1 si == 0, 0 cc
 
-	addps xmm1, xmm4 ; xmm1 = 1 si == 0, el valor anterior cc
+	movdqa xmm5, xmm1
+	cmpps xmm5, xmm11, 0 ; xmm5 = en cada float: 1..1 si == 0, 0s cc
+	pand xmm5, xmm10 ; xmm5 = en cada float: 1 si == 0, 0 cc
+
+	addps xmm4, xmm5 ; xmm4 = en cada float: 1 si == 0 o == 1, 0 cc
+
+	addps xmm1, xmm4 ; xmm1 = 1 si == 0, xmm1 = 2 si == 1, sin cambios (valor anterior) cc
 
 	;calculo final del terreno (influencia/cant picos == xmm0/xmm1)
 	divps xmm0, xmm1
-	movdqu [rdi + r9 * tam_elem], xmm0
+	movdqu [rcx + r9 * tam_elem], xmm0
 
 	;ir al sig:
 	add r9, pack_size

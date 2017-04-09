@@ -61,12 +61,16 @@ int main(int argc, char const *argv[])
 
 	UpliftTerrainGenerator2D_ASM asmVersion2d;
 	UpliftTerrainGenerator2D_C cVersion2d;
+	
+	cout << endl;
 
 	cout << "**********    2D C VERSION   **********" << endl;
 	vector<float> terrain = cVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed);
 	Graficador gr;
 	gr.init();
 	gr.graficar(terrain);
+
+	cout << endl;
 
 	cout << "**********    2D ASM VERSION   **********" << endl;
 	terrain = asmVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed);

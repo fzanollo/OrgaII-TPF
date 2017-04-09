@@ -6,7 +6,7 @@
 #include <vector>
 #include "upliftTerrainGenerator2D.h"
 
-extern "C" int fun( float* matrix, int rows, int cols);
+extern "C" int fun( float* matrix, int rows, int cols, float* terrain);
 
 using namespace std;
 
@@ -37,16 +37,14 @@ class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 		}
 		cout<<endl;
 
-		fun(( float*)influencia, nroPeaks, divisions);
+		float terrainArray[divisions];
 
-		//TODO: change output of fun...ponele
+		fun(( float*)influencia, nroPeaks, divisions, terrainArray);
+
 		for (int i = 0; i < divisions; ++i)
 		{
-			terrain.push_back(influencia[0][i]);
-			cout << " * " << influencia[0][i] ;
+			terrain.push_back(terrainArray[i]);
 		}
-		cout << endl;
-		//--------------------
 	}
 };
 
