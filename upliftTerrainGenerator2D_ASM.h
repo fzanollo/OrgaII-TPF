@@ -18,7 +18,7 @@ using namespace std;
 */
 class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 	void doTheMath(int divisions, int nroPeaks, int peaksPos [], int peaksSize []){
-		float influencia[nroPeaks][divisions];
+		float* influencia = new float [nroPeaks * divisions];
 
 		for (int i = 0; i < nroPeaks; ++i)
 		{
@@ -29,7 +29,7 @@ class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 				if(influence < 0) {
 					influence = 0;
 				}
-				influencia[i][j] = influence;
+				influencia[ j + divisions * i ] = influence;
 			}
 		}
 
@@ -41,6 +41,8 @@ class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 		{
 			terrain.push_back(terrainArray[i]);
 		}
+
+		delete[] influencia;
 	}
 };
 

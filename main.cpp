@@ -6,6 +6,8 @@
 #include "upliftTerrainGenerator2D_C.h"
 #include "upliftTerrainGenerator2D_ASM.h"
 
+#include <time.h>
+
 const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of parameters is:\n	divisions, nroPeaks, yMin, yMax, (seed (optional), 'v' if you want verbouse (only with custom seed)) \nYou can also set it to be interactive with an 'i'\n";
 
 using namespace std;
@@ -68,22 +70,32 @@ int main(int argc, char const *argv[])
 	UpliftTerrainGenerator2D_ASM asmVersion2d;
 	UpliftTerrainGenerator2D_C cVersion2d;
 	Graficador gr;
+
+	clock_t start, end;
+    double cpu_time_used;
 	
 	cout << "seed is: " << seed << endl;
 	cout << endl;
 	cout << "**********    2D C VERSION   **********" << endl;
 
+start = clock();
 	// CALCULO VERSION C
 	vector<float> terrain = cVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging);
-
+end = clock();
+cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+cout << "cpu_time_used " << cpu_time_used << endl;
 	gr.init();
 	gr.graficar(terrain);
 
 	cout << endl;
 	cout << "**********    2D ASM VERSION   **********" << endl;
 
+start = clock();
 	// CALCULO VERSION ASM
 	terrain = asmVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging);
+end = clock();
+cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+cout << "cpu_time_used " << cpu_time_used << endl;
 
 	gr.init();
 	gr.graficar(terrain);
