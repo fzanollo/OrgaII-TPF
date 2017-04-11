@@ -35,7 +35,12 @@ movdqa xmm12, [onesPS] ; xmm12 = 1.0 | 1.0 | 1.0 | 1.0
 movdqa xmm13, [positions_aux] ; xmm13 = 0 | 1 | 2 | 3
 
 mov r10, 0
+mov r11, pack_size
 .terrain:
+	;alignment
+	cmp r11, rcx
+	jg .alignTerrain
+	.finAlignTerrain:
 
 	movd xmm10, r10d
 	pshufd xmm10, xmm10, 0x0 ; xmm10 = posActual | posActual | posActual | posActual 
@@ -44,18 +49,23 @@ mov r10, 0
 	pxor xmm14, xmm14 ;acumulador para la influencia
 	pxor xmm15, xmm15 ;acumulador para la cant de picos
 	
-	mov r11, 0
+	mov r12, 0
+	mov r13, pack_size
 	.peaks:
+		;alignment
+		cmp r13, rdx
+		jg .alignPeaks
+
 		;leer peaksPos
-		movdqu xmm1, [rdi + r11 * tam_elem]
+		movdqu xmm1, [rdi + r12 * tam_elem]
 		
 		;leer peaksSize
-		movdqu xmm2, [rsi + r11 * tam_elem]
+		movdqu xmm2, [rsi + r12 * tam_elem]
 
 		; PARA EL PRIMER PICO*****************
 			;datos
-			pshufd xmm3, xmm1, 0xFF ; xmm3 = posP1 | posP1 | posP1 | posP1 
-			pshufd xmm7, xmm2, 0xFF ; xmm7 = sizeP1 | sizeP1 | sizeP1 | sizeP1 
+			pshufd xmm3, xmm1, 0x00 ; xmm3 = posP1 | posP1 | posP1 | posP1 
+			pshufd xmm7, xmm2, 0x00 ; xmm7 = sizeP1 | sizeP1 | sizeP1 | sizeP1 
 
 			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual)
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
@@ -76,10 +86,11 @@ mov r10, 0
 			paddd xmm15, xmm3 ; cant de picos
 		;*************************************
 
+		.faltanTresPicos:
 		; PARA EL SEGUNDO PICO*****************
 			;datos
-			pshufd xmm3, xmm1, 0xAA ; xmm3 = posP2 | posP2 | posP2 | posP2 
-			pshufd xmm7, xmm2, 0xAA ; xmm7 = sizeP2 | sizeP2 | sizeP2 | sizeP2 
+			pshufd xmm3, xmm1, 0x55 ; xmm3 = posP2 | posP2 | posP2 | posP2 
+			pshufd xmm7, xmm2, 0x55 ; xmm7 = sizeP2 | sizeP2 | sizeP2 | sizeP2 
 
 			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual)
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
@@ -100,10 +111,11 @@ mov r10, 0
 			paddd xmm15, xmm3 ; cant de picos
 		;*************************************
 
+		.faltanDosPicos:
 		; PARA EL TERCER PICO*****************
 			;datos
-			pshufd xmm3, xmm1, 0x55 ; xmm3 = posP3 | posP3 | posP3 | posP3 
-			pshufd xmm7, xmm2, 0x55 ; xmm7 = sizeP3 | sizeP3 | sizeP3 | sizeP3 
+			pshufd xmm3, xmm1, 0xAA ; xmm3 = posP3 | posP3 | posP3 | posP3 
+			pshufd xmm7, xmm2, 0xAA ; xmm7 = sizeP3 | sizeP3 | sizeP3 | sizeP3 
 
 			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual)
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
@@ -124,10 +136,11 @@ mov r10, 0
 			paddd xmm15, xmm3 ; cant de picos
 		;*************************************
 
+		.faltaUnPico:
 		; PARA EL CUARTO PICO*****************
 			;datos
-			pshufd xmm3, xmm1, 0x0 ; xmm3 = posP4 | posP4 | posP4 | posP4 
-			pshufd xmm7, xmm2, 0x0 ; xmm7 = sizeP4 | sizeP4 | sizeP4 | sizeP4 
+			pshufd xmm3, xmm1, 0xFF ; xmm3 = posP4 | posP4 | posP4 | posP4 
+			pshufd xmm7, xmm2, 0xFF ; xmm7 = sizeP4 | sizeP4 | sizeP4 | sizeP4 
 
 			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual)
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
@@ -149,9 +162,10 @@ mov r10, 0
 		;*************************************
 
 		;siguiente batch de peaks
-		add r11, pack_size
-		cmp r11, rdx
-		; jg .alignPeaks
+		add r12, pack_size
+		add r13, pack_size
+
+		cmp r12, rdx
 		jne .peaks
 
 	;se terminaron de recorrer los picos
@@ -173,8 +187,9 @@ mov r10, 0
 
 	;siguiente batch de terrain
 	add r10, pack_size
+	add r11, pack_size
+
 	cmp r10, rcx
-	; jg .alignTerrain
 	jne .terrain
 
 ;fin codigo
@@ -186,3 +201,36 @@ pop  rbx
 add rsp, 24
 pop  rbp
 ret
+
+
+;TERRAIN
+;reacomodo si al final no llega justo
+.alignTerrain:
+mov r10, rcx
+sub r10, pack_size
+jmp .finAlignTerrain
+
+
+;PEAKS
+;reacomodo si al final no llega justo
+.alignPeaks:
+mov r9, rdx
+sub r9, r12
+
+mov r12, rdx
+sub r12, pack_size
+
+;leer peaksPos
+movdqu xmm1, [rdi + r12 * tam_elem]
+
+;leer peaksSize
+movdqu xmm2, [rsi + r12 * tam_elem]
+
+cmp r9, 1
+je .faltaUnPico
+
+cmp r9, 2
+je .faltanDosPicos
+
+cmp r9, 3
+je .faltanTresPicos
