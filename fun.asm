@@ -29,6 +29,9 @@ push r15
 ;r8 = puntero a terrainArray
 
 pxor xmm0, xmm0 ; xmm0 = 0s
+
+movdqa xmm4, [onesINT] ; xmm4 = 1 | 1 | 1 | 1
+movdqa xmm12, [onesPS] ; xmm12 = 1.0 | 1.0 | 1.0 | 1.0
 movdqa xmm13, [positions_aux] ; xmm13 = 0 | 1 | 2 | 3
 
 mov r10, 0
@@ -58,12 +61,15 @@ mov r10, 0
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
 			pabsd xmm3, xmm3 ; xmm3 = Abs(peakPos - posActual)
 			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual)
+			;pero si esa cuenta es <0 entonces dejamos en cero
+			movdqa xmm3, xmm7
+			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
+			pand xmm7, xmm3 ; si el valor era <=0 se ponen 0, cc se deja igual
 
 			;Calcular cantidad de picos p/c pos
 			movdqa xmm3, xmm7
 			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
-			movdqa xmm12, [onesINT] ; xmm12 = 1 | 1 | 1 | 1
-			pand xmm3, xmm12 ; xmm3 (cant de picos) = en cada int: 1 si > 0, 0 cc
+			pand xmm3, xmm4 ; xmm3 (cant de picos) = en cada int: 1 si > 0, 0 cc
 
 			;Acumular
 			paddd xmm14, xmm7 ; influencia
@@ -79,12 +85,15 @@ mov r10, 0
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
 			pabsd xmm3, xmm3 ; xmm3 = Abs(peakPos - posActual)
 			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual)
+			;pero si esa cuenta es <0 entonces dejamos en cero
+			movdqa xmm3, xmm7
+			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
+			pand xmm7, xmm3 ; si el valor era <=0 se ponen 0, cc se deja igual
 
 			;Calcular cantidad de picos p/c pos
 			movdqa xmm3, xmm7
 			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
-			movdqa xmm12, [onesINT] ; xmm12 = 1 | 1 | 1 | 1
-			pand xmm3, xmm12 ; xmm3 (cant de picos) = en cada int: 1 si > 0, 0 cc
+			pand xmm3, xmm4 ; xmm3 (cant de picos) = en cada int: 1 si > 0, 0 cc
 
 			;Acumular
 			paddd xmm14, xmm7 ; influencia
@@ -100,12 +109,15 @@ mov r10, 0
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
 			pabsd xmm3, xmm3 ; xmm3 = Abs(peakPos - posActual)
 			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual)
+			;pero si esa cuenta es <0 entonces dejamos en cero
+			movdqa xmm3, xmm7
+			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
+			pand xmm7, xmm3 ; si el valor era <=0 se ponen 0, cc se deja igual
 
 			;Calcular cantidad de picos p/c pos
 			movdqa xmm3, xmm7
 			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
-			movdqa xmm12, [onesINT] ; xmm12 = 1 | 1 | 1 | 1
-			pand xmm3, xmm12 ; xmm3 (cant de picos) = en cada int: 1 si > 0, 0 cc
+			pand xmm3, xmm4 ; xmm3 (cant de picos) = en cada int: 1 si > 0, 0 cc
 
 			;Acumular
 			paddd xmm14, xmm7 ; influencia
@@ -121,12 +133,15 @@ mov r10, 0
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
 			pabsd xmm3, xmm3 ; xmm3 = Abs(peakPos - posActual)
 			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual)
+			;pero si esa cuenta es <0 entonces dejamos en cero
+			movdqa xmm3, xmm7
+			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
+			pand xmm7, xmm3 ; si el valor era <=0 se ponen 0, cc se deja igual
 
 			;Calcular cantidad de picos p/c pos
 			movdqa xmm3, xmm7
 			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
-			movdqa xmm12, [onesINT] ; xmm12 = 1 | 1 | 1 | 1
-			pand xmm3, xmm12 ; xmm3 (cant de picos) = en cada int: 1 si > 0, 0 cc
+			pand xmm3, xmm4 ; xmm3 (cant de picos) = en cada int: 1 si > 0, 0 cc
 
 			;Acumular
 			paddd xmm14, xmm7 ; influencia
@@ -145,9 +160,7 @@ mov r10, 0
 	cvtdq2ps xmm14, xmm14 ; influencia
 	cvtdq2ps xmm15, xmm15 ; cant de picos
 
-	;Corregir la cant de picos para no dividir por cero y en caso de un solo pico dividir por dos
-	movdqa xmm12, [onesPS] ; xmm12 = 1.0 | 1.0 | 1.0 | 1.0
-	
+	;Corregir la cant de picos para no dividir por cero y en caso de un solo pico dividir por dos	
 	movdqa xmm1, xmm15
 	cmpps xmm1, xmm12, 2 ; xmm1 = en cada float: 1..1 si <= 1, 0s cc
 	pand xmm1, xmm12 ; xmm1 = en cada float: 1 si antes == 0 o == 1, 0 cc
