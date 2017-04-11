@@ -5,7 +5,7 @@
 #include <vector>
 #include "upliftTerrainGenerator2D.h"
 
-extern "C" int fun( float* matrix, int rows, int cols, float* terrain);
+extern "C" int fun(int* peaksPos, int* peaksSize, int nroPeaks, int divisions, float* terrainArray);
 
 using namespace std;
 
@@ -18,31 +18,15 @@ using namespace std;
 */
 class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 	void doTheMath(int divisions, int nroPeaks, int peaksPos [], int peaksSize []){
-		float* influencia = new float [nroPeaks * divisions];
-
-		for (int i = 0; i < nroPeaks; ++i)
-		{
-			for (int j = 0; j < divisions; ++j)
-			{
-				float influence = peaksSize[i] - abs(peaksPos[i] - j);
-
-				if(influence < 0) {
-					influence = 0;
-				}
-				influencia[ j + divisions * i ] = influence;
-			}
-		}
 
 		float terrainArray[divisions];
 
-		fun(( float*)influencia, nroPeaks, divisions, terrainArray);
+		fun(peaksPos, peaksSize, nroPeaks, divisions, terrainArray);
 
 		for (int i = 0; i < divisions; ++i)
 		{
 			terrain.push_back(terrainArray[i]);
 		}
-
-		delete[] influencia;
 	}
 };
 
