@@ -13,15 +13,19 @@ class UpliftTerrainGenerator2D {
 			int peaksSize[nroPeaks];
 			vector<int> positions;
 
+			for (int i = 0; i < divisions; ++i)
+			{
+				positions.push_back(i);
+			}
+
 			// crea los picos en alguna posicion
 			for (int i = 0; i < nroPeaks; ++i)
 			{
-				//always in different positions //TODO: add logic to choose positions not completly random
-				int position = rand() % divisions;
-				while(contains(positions, position)){
-					position = rand() % divisions;
-				}
-				positions.push_back(position);
+				int randElem = rand() % positions.size();
+				int position = positions[randElem];
+
+				//siempre en posiciones distintas (borra la pos usada)
+				positions.erase(positions.begin() + randElem);
 
 				int size = rand() % (yMax-yMin+1) + yMin; //in the range [yMin, yMax]
 
