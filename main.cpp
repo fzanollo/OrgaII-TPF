@@ -8,12 +8,14 @@
 
 #include <time.h>
 
+#include <nonius/nonius.h++>
 const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of parameters is:\n	divisions, nroPeaks, yMin, yMax, (seed (optional), 'v' if you want verbouse (only with custom seed)) \nYou can also set it to be interactive with an 'i'\n";
 
 using namespace std;
 
 int main(int argc, char const *argv[])
 {
+	
 	// initialize seed and default variables
 	unsigned int seed = 200;
 	int divisions=10;
@@ -96,6 +98,17 @@ start = clock();
 end = clock();
 cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 cout << "cpu_time_used " << cpu_time_used << endl;
+
+	nonius::configuration cfg;
+	//cfg.output_file = "example2.csv";
+	cfg.samples = 200;
+    cfg.verbose = true;
+    nonius::benchmark_registry benchmarks = {
+        nonius::benchmark("version C", [=]{ UpliftTerrainGenerator2D_C cVersion2d; return cVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging); }),
+        nonius::benchmark("version ASM", [=]{ UpliftTerrainGenerator2D_ASM asmVersion2d; return asmVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging); }),
+    };
+
+    nonius::go(cfg, benchmarks);
 
 	gr.init();
 	gr.graficar(terrain);
