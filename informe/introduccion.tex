@@ -1,0 +1,7 @@
+\section{Introduccion}
+
+Para este trabajo práctico nos propusimos implementar el modelo para generación de terreno explicado en el paper "The Uplift Model Terrain Generator".\footnote{\url{https://www.dropbox.com/s/q6brk3jqwppxrhx/upliftTerrainGenerator.pdf?dl=0}}
+
+En él se propone la generación de terreno montañoso a partir de elevaciones o picos. El modelo se puede aplicar tanto en 2D como 3D. La idea general del algoritmo es generar picos de manera aleatoria y luego obtener la altura final de cada porción del terreno promediando las influencias provenientes de las elevaciones.
+
+Nuestra meta es realizar dos implementaciones del modelo, una de ellas en C++ y la otra en ASM utilizando la tecnología SIMD. Para poder así demostrar cómo, utilizando SIMD, se puede acelerar el procesamiento.

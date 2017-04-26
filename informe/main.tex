@@ -1,0 +1,49 @@
+\documentclass[a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{caratula}
+\usepackage{graphicx}
+
+\usepackage{hyperref}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ - #1}}
+
+\fancyhf{}
+
+\fancyhead[LO]{Sección \rightmark} % \thesection\ 
+\fancyfoot[RO]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\setlength{\hoffset}{-0.8in}
+\setlength{\textwidth}{16cm}
+\setlength{\headsep}{0.5cm}
+\setlength{\textheight}{25cm}
+\setlength{\voffset}{-0.7in}
+\setlength{\headwidth}{\textwidth}
+\setlength{\headheight}{13.1pt}
+
+\renewcommand{\baselinestretch}{1.1}  % line spacing
+
+
+\begin{document}
+
+	\materia{Organización del computador II}
+	\titulo{TP Final: Generación de terrenos montañosos por elevación}
+	\integrante{Florencia Zanollo}{934/11}{florenciazanollo@gmail.com}
+	\integrante{Luis Toffoletti}{827/11}{luis.toffoletti@gmail.com}
+	
+	\maketitle
+	
+	\tableofcontents
+	\newpage
+
+	\input{introduccion}
+	\newpage
+		
+	\input{2D/2D}
+	
+\end{document}
