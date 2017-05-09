@@ -127,7 +127,7 @@ class Graficador {
 		    puntosY[viewSize-1] = height-1;
 
 		    //filledPolygonRGBA (SDL_Renderer *renderer, const Sint16 *vx, const Sint16 *vy, int n, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-		    filledPolygonRGBA (renderer, puntosX, puntosY, viewSize, 51, 26, 0, 255);
+		    filledPolygonRGBA (renderer, puntosX, puntosY, viewSize, 128, 0, 0, 255);
 
 		    //Refresh screen -----------
 		    SDL_SetRenderTarget(renderer, NULL);
