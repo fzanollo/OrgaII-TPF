@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 class UpliftTerrainGenerator2D {
 	public:
 		vector<float> generateTerrain(int divisions, int nroPeaks, int yMin, int yMax, unsigned int seed, bool debugging){

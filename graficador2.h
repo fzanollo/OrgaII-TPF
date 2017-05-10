@@ -3,7 +3,6 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
-#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -11,30 +10,36 @@ using namespace std;
 class Graficador {
 	int scrollPixelQuantity = 10;
 
-	int ancho = 10;
-	int escala = 10;
-	int width = 1024;
-	int height = 768;
+	int ancho;
+	int escala;
+	int width;
+	int height;
 
-	int viewWidth = floor(width / ancho) + 3;
+	int viewWidth;
 
-	int viewSize = viewWidth+2;
+	int viewSize;
+
+	SDL_Window *window;
+    SDL_Renderer *renderer;
+    SDL_Texture *texture;
+    SDL_Event event;
 
 	public:
 		Graficador() {
+			scrollPixelQuantity = 10;
+
+			ancho = 10;
+			escala = 10;
+			width = 1024;
+			height = 768;
+
+			viewWidth = floor(width / ancho) + 3;
+
+			viewSize = viewWidth+2;
 		}
 
-		int graficar(vector<float> terrain)
-		{
-		    SDL_Window *window;
-		    SDL_Renderer *renderer;
-		    SDL_Texture *texture;
-		    SDL_Event event;
-
-		    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
-		            return 3;
-		    }
+		void init(){
+		    SDL_Init(SDL_INIT_VIDEO);
 
 		    window = SDL_CreateWindow("SDL_CreateTexture",
 		                    SDL_WINDOWPOS_UNDEFINED,
@@ -45,12 +50,14 @@ class Graficador {
 		    renderer = SDL_CreateRenderer(window, -1, 0);
 
 		    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1024, 768);
+		}
 
+		void graficar(vector<float> terrain){
+		    
 		    //-------------------------------
 		    int from = 0;
 		    renderFromToTerrain(renderer, texture, from, terrain);
 		    //-------------------------------
-
 
 		    bool quit = false;
 		    //Event handler 
@@ -83,17 +90,22 @@ class Graficador {
 
 								break; 
 							default: 
-								cout << "solo se pueden usar izq y der" << endl;;
+								//cout << "solo se pueden usar izq y der" << endl;
 								break; 
 						} 
 					} 
 				}
 			}
 
-		    SDL_DestroyRenderer(renderer);
-		    SDL_Quit();
+		    if (renderer) {
+	            SDL_DestroyRenderer(renderer);
+	        }
 
-		    return 0;
+	        if (window) {
+	            SDL_DestroyWindow(window);
+	        }
+
+	        SDL_Quit();
 		}
 
 	private:
