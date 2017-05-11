@@ -15,7 +15,7 @@ using namespace std;
 	steepness: ?
 */
 class UpliftTerrainGenerator2D_C: public UpliftTerrainGenerator2D {
-	void doTheMath(int divisions, int nroPeaks, int peaksPos [], int peaksSize []){
+	void doTheMath(int divisions, int nroPeaks, int peaksPos [], int peaksSize [], int ruggedness){
 		for (int i = 0; i < divisions; ++i)
 		{
 			float influenceSum = 0;
@@ -25,7 +25,7 @@ class UpliftTerrainGenerator2D_C: public UpliftTerrainGenerator2D {
 			{
 				float influence;
 				if (peaksSize[p] > abs(peaksPos[p] - i)){
-					influence = peaksSize[p] - abs(peaksPos[p] - i);
+					influence = peaksSize[p] - abs(peaksPos[p] - i) * ruggedness;
 				} else {
 					influence = 0;
 				}

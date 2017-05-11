@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
 	int nroPeaks = 4;
 	int yMin = 1;
 	int yMax = 10;
-	//? steepness= ?;
+	int ruggedness= 1;
 	bool debugging = false;
 
 	if (argc <= 1){
@@ -43,18 +43,21 @@ int main(int argc, char const *argv[])
 		cout << "Insert maximum high (yMax): ";
 		cin >> yMax;
 	} else{
-		if(argc >= 5) {
+		if(argc >= 6) {
 			divisions = atoi(argv[1]);
 			nroPeaks = atoi(argv[2]);
 			yMin = atoi(argv[3]);
 			yMax = atoi(argv[4]);
+			ruggedness = atoi(argv[5]);
 
-			if(argc >= 6){
+			cout<< "ruggedness = " << ruggedness << endl;
+
+			if(argc >= 7){
 				//set custom seed
-				seed = atoi(argv[5]);
+				seed = atoi(argv[6]);
 
-				if(argc >= 7){
-					debugging = ((strcmp(argv[6], "v") == 0));
+				if(argc >= 8){
+					debugging = ((strcmp(argv[7], "v") == 0));
 				}
 			} else{
 				seed = time(NULL);
@@ -80,10 +83,11 @@ int main(int argc, char const *argv[])
 
 start = clock();
 	// CALCULO VERSION C
-	vector<float> terrain = cVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging);
+	vector<float> terrain = cVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, ruggedness, seed, debugging);
 end = clock();
 cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 cout << "cpu_time_used " << cpu_time_used << endl;
+
 	gr.init();
 	gr.graficar(terrain);
 
@@ -92,7 +96,7 @@ cout << "cpu_time_used " << cpu_time_used << endl;
 
 start = clock();
 	// CALCULO VERSION ASM
-	terrain = asmVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, seed, debugging);
+	terrain = asmVersion2d.generateTerrain(divisions, nroPeaks, yMin, yMax, ruggedness, seed, debugging);
 end = clock();
 cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 cout << "cpu_time_used " << cpu_time_used << endl;

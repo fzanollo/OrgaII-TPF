@@ -5,7 +5,7 @@
 
 class UpliftTerrainGenerator2D {
 	public:
-		vector<float> generateTerrain(int divisions, int nroPeaks, int yMin, int yMax, unsigned int seed, bool debugging){
+		vector<float> generateTerrain(int divisions, int nroPeaks, int yMin, int yMax, int ruggedness, unsigned int seed, bool debugging){
 			//initialize random
 			srand(seed);
 
@@ -45,7 +45,7 @@ class UpliftTerrainGenerator2D {
 
 			//*********************
 
-			doTheMath(divisions, nroPeaks, peaksPos, peaksSize);
+			doTheMath(divisions, nroPeaks, peaksPos, peaksSize, ruggedness);
 
 			//*********************
 
@@ -66,7 +66,7 @@ class UpliftTerrainGenerator2D {
 	protected:
 		vector<float> terrain;
 
-		virtual void doTheMath(int divisions, int nroPeaks, int peaksPos [], int peaksSize []){
+		virtual void doTheMath(int divisions, int nroPeaks, int peaksPos [], int peaksSize [], int ruggedness){
 			cout << "ESTO NO DEBERIA PASAR, estas en doTheMath de la clase base!!" << endl;
 		};
 
