@@ -27,12 +27,16 @@ push r15
 ;rdx = nroPeaks
 ;rcx = divisions
 ;r8 = puntero a terrainArray
+;r9 = ruggedness
 
 pxor xmm0, xmm0 ; xmm0 = 0s
 
 movdqa xmm4, [onesINT] ; xmm4 = 1 | 1 | 1 | 1
 movdqa xmm12, [onesPS] ; xmm12 = 1.0 | 1.0 | 1.0 | 1.0
 movdqa xmm13, [positions_aux] ; xmm13 = 0 | 1 | 2 | 3
+
+movd xmm11, r9d
+pshufd xmm11, xmm11, 0x0 ; xmm11 = ruggedness | ruggedness | ruggedness | ruggedness 
 
 mov r10, 0
 mov r11, pack_size
@@ -67,10 +71,13 @@ mov r11, pack_size
 			pshufd xmm3, xmm1, 0x00 ; xmm3 = posP1 | posP1 | posP1 | posP1 
 			pshufd xmm7, xmm2, 0x00 ; xmm7 = sizeP1 | sizeP1 | sizeP1 | sizeP1 
 
-			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual)
+			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual) * ruggedness
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
 			pabsd xmm3, xmm3 ; xmm3 = Abs(peakPos - posActual)
-			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual)
+
+			PMULLD xmm3, xmm11 ; xmm3 = Abs(peakPos - posActual) * ruggedness
+
+			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual) * ruggedness
 			;pero si esa cuenta es <0 entonces dejamos en cero
 			movdqa xmm3, xmm7
 			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
@@ -92,10 +99,13 @@ mov r11, pack_size
 			pshufd xmm3, xmm1, 0x55 ; xmm3 = posP2 | posP2 | posP2 | posP2 
 			pshufd xmm7, xmm2, 0x55 ; xmm7 = sizeP2 | sizeP2 | sizeP2 | sizeP2 
 
-			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual)
+			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual) * ruggedness
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
 			pabsd xmm3, xmm3 ; xmm3 = Abs(peakPos - posActual)
-			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual)
+
+			PMULLD xmm3, xmm11 ; xmm3 = Abs(peakPos - posActual) * ruggedness
+
+			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual) * ruggedness
 			;pero si esa cuenta es <0 entonces dejamos en cero
 			movdqa xmm3, xmm7
 			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
@@ -117,10 +127,13 @@ mov r11, pack_size
 			pshufd xmm3, xmm1, 0xAA ; xmm3 = posP3 | posP3 | posP3 | posP3 
 			pshufd xmm7, xmm2, 0xAA ; xmm7 = sizeP3 | sizeP3 | sizeP3 | sizeP3 
 
-			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual)
+			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual) * ruggedness
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
 			pabsd xmm3, xmm3 ; xmm3 = Abs(peakPos - posActual)
-			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual)
+
+			PMULLD xmm3, xmm11 ; xmm3 = Abs(peakPos - posActual) * ruggedness
+
+			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual) * ruggedness
 			;pero si esa cuenta es <0 entonces dejamos en cero
 			movdqa xmm3, xmm7
 			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
@@ -142,10 +155,13 @@ mov r11, pack_size
 			pshufd xmm3, xmm1, 0xFF ; xmm3 = posP4 | posP4 | posP4 | posP4 
 			pshufd xmm7, xmm2, 0xFF ; xmm7 = sizeP4 | sizeP4 | sizeP4 | sizeP4 
 
-			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual)
+			;Calcular influencia p/c pos, es decir: peakSize - Abs(peakPos - posActual) * ruggedness
 			psubd xmm3, xmm10 ; xmm3 = peakPos - posActual
 			pabsd xmm3, xmm3 ; xmm3 = Abs(peakPos - posActual)
-			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual)
+
+			PMULLD xmm3, xmm11 ; xmm3 = Abs(peakPos - posActual) * ruggedness
+
+			psubd xmm7, xmm3 ; xmm7 (influencia) = peakSize - Abs(peakPos - posActual) * ruggedness
 			;pero si esa cuenta es <0 entonces dejamos en cero
 			movdqa xmm3, xmm7
 			pcmpgtd xmm3, xmm0 ; xmm3= en cada int: 1..1 si > 0, 0s cc
@@ -214,8 +230,8 @@ jmp .finAlignTerrain
 ;PEAKS
 ;reacomodo si al final no llega justo
 .alignPeaks:
-mov r9, rdx
-sub r9, r12
+mov r14, rdx
+sub r14, r12
 
 mov r12, rdx
 sub r12, pack_size
@@ -226,11 +242,11 @@ movdqu xmm1, [rdi + r12 * tam_elem]
 ;leer peaksSize
 movdqu xmm2, [rsi + r12 * tam_elem]
 
-cmp r9, 1
+cmp r14, 1
 je .faltaUnPico
 
-cmp r9, 2
+cmp r14, 2
 je .faltanDosPicos
 
-cmp r9, 3
+cmp r14, 3
 je .faltanTresPicos

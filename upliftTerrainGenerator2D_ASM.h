@@ -5,7 +5,7 @@
 #include <vector>
 #include "upliftTerrainGenerator2D.h"
 
-extern "C" int fun(int* peaksPos, int* peaksSize, int nroPeaks, int divisions, float* terrainArray);
+extern "C" int fun(int* peaksPos, int* peaksSize, int nroPeaks, int divisions, float* terrainArray, int ruggedness);
 
 using namespace std;
 
@@ -23,7 +23,7 @@ class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 
 		//TODO maybe, agregar calculos de ruggedneess en el asm 
 
-		fun(peaksPos, peaksSize, nroPeaks, divisions, terrainArray);
+		fun(peaksPos, peaksSize, nroPeaks, divisions, terrainArray, ruggedness);
 
 		for (int i = 0; i < divisions; ++i)
 		{

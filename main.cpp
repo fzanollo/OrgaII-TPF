@@ -8,7 +8,7 @@
 
 #include <time.h>
 
-const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of parameters is:\n	divisions, nroPeaks, yMin, yMax, (seed (optional), 'v' if you want verbouse (only with custom seed)) \nYou can also set it to be interactive with an 'i'\n";
+const string ERROR_MESSAGE = "ERROR: NOT ENOUGH PARAMETERS \nExpected order of parameters is:\n	divisions, nroPeaks, yMin, yMax, ruggedness, (seed (optional), 'v' if you want verbouse (only with custom seed)) \nYou can also set it to be interactive with an 'i'\n";
 
 using namespace std;
 
@@ -25,7 +25,7 @@ int main(int argc, char const *argv[])
 
 	if (argc <= 1){
 		cout << ERROR_MESSAGE;
-		return 0;
+		return 1;
 	}
 
 	bool interactive = (strcmp(argv[1], "i") == 0);
@@ -42,6 +42,9 @@ int main(int argc, char const *argv[])
 
 		cout << "Insert maximum high (yMax): ";
 		cin >> yMax;
+
+		cout << "Insert ruggedness: ";
+		cin >> ruggedness;
 	} else{
 		if(argc >= 6) {
 			divisions = atoi(argv[1]);
@@ -65,6 +68,7 @@ int main(int argc, char const *argv[])
 		}
 		else {
 			cout << ERROR_MESSAGE;
+			return 1;
 		}
 	}
 
