@@ -10,6 +10,9 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
 \renewcommand{\sectionmark}[1]{\markright{\thesection\ - #1}}
 
 \fancyhf{}
@@ -28,7 +31,6 @@
 
 \renewcommand{\baselinestretch}{1.1}  % line spacing
 
-
 \begin{document}
 
 	\materia{Organización del computador II}
@@ -43,7 +45,13 @@
 
 	\input{introduccion}
 	\newpage
-		
-	\input{2D/2D}
+	
+	\input{implementacion}
+	\newpage
+	
+	\input{experimentacionyresultados}
+	\newpage	
+	
+	\input{conclusionymejoras}
 	
 \end{document}
