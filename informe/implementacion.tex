@@ -49,3 +49,11 @@ Los picos son generados de manera aleatoria, tanto su posición como su altura (
 
 \end{algorithmic}
 \end{algorithm}
+
+Quedando así en cada posición del terreno final el valor de 'promediar' todos los picos que tienen influencia sobre ella.
+
+\subsection{Versión de C}
+Está versión es muy sencilla ya que se puede mapear directamente el pseudocódigo a código, con pocas modificaciones. Luego basta con compilar utilizando las mejoras de sse para contar con las posibles mejoras SIMD que encuentre el compilador.
+
+\newpage
+\input{implementacionASM}
