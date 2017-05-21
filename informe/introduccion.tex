@@ -1,7 +1,16 @@
 \section{Introduccion}
 
-Para este trabajo práctico nos propusimos implementar el modelo para generación de terreno explicado en el paper "The Uplift Model Terrain Generator".\footnote{\url{https://www.dropbox.com/s/q6brk3jqwppxrhx/upliftTerrainGenerator.pdf?dl=0}}
+Para este trabajo práctico nos propusimos implementar el modelo para generación de terreno explicado en el paper "The Uplift Model Terrain Generator".\footnote{\url{https://www.dropbox.com/s/q6brk3jqwppxrhx/upliftTerrainGenerator.pdf?dl=0}} Generación de terreno es la creación virtual de formaciones terrestres en computación gráfica. El objetivo es crear formaciones que se vean reales sin consumir demasiado tiempo de procesamiento, para que puedan ser utilizadas en simulaciones, videojuegos, etc.
 
-En él se propone la generación de terreno montañoso a partir de elevaciones o picos. El modelo se puede aplicar tanto en 2D como 3D. La idea general del algoritmo es generar picos de manera aleatoria y luego obtener la altura final de cada porción del terreno promediando las influencias provenientes de las elevaciones.
+En el paper se propone la generación de terreno montañoso a partir de elevaciones o picos, en contraste con métodos anteriores como el algoritmo fractal. El modelo se puede aplicar tanto en 2D como 3D y promete ser menos intensivo computacionalmente que sus antecesores. La idea general del algoritmo es generar picos de manera aleatoria y luego obtener la altura final de cada porción del terreno promediando las influencias provenientes de las elevaciones.
 
-Realizaremos dos implementaciones del modelo, una de ellas en C++ y la otra en ASM utilizando la tecnología SIMD. Nuestro objetivo es comparar estas implementaciones y ver si nuestro código ASM es más veloz que el generado por el compilador (g++).
+En nuestro trabajo realizaremos dos implementaciones del modelo, una de ellas en C++ y la otra en ASM utilizando la tecnología SIMD.
+Nuestros objetivos son:
+
+\begin{itemize}
+\item Obtener métricas para determinar ventajas y desventajas de realizar parte del procesamiento en assembler y decidir en qué casos podría recomendarse su utilización.
+\item Construir una solución que utilice de forma más eficiente el procesamiento de datos en paralelo.
+\item Obtener representaciones gráficas de los terrenos generados, que puedan tener utilidad práctica y, a partir del tamaño de su entrada, estimar el tiempo de procesamiento.
+\end{itemize}
+
+En este informe pretendemos mostrar los gráficos y resultados obtenidos así también como explicar de manera simplificada la solución de las distintas implementaciones.
