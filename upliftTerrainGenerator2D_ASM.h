@@ -19,9 +19,8 @@ using namespace std;
 class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 	void doTheMath(int divisions, int nroPeaks, int peaksPos [], int peaksSize [], int ruggedness){
 
-		float terrainArray[divisions];
-
-		//TODO maybe, agregar calculos de ruggedneess en el asm 
+		float *terrainArray = new float[divisions] ;
+ 
 
 		fun(peaksPos, peaksSize, nroPeaks, divisions, terrainArray, ruggedness);
 
@@ -29,6 +28,8 @@ class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 		{
 			terrain.push_back(terrainArray[i]);
 		}
+		
+		delete terrainArray;
 	}
 };
 
