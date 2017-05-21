@@ -5,6 +5,7 @@ El método requiere de los siguientes datos de entrada:
 \item[nroPeaks] cantidad total de picos.
 \item[yMin] altura mínima permitida de un pico.
 \item[yMin] altura máxima permitida de un pico.
+\item[ruggedness] escabrosidad del terreno, es decir, qué tanto afecta un pico a sus posiciones aledañas.
 \end{description}
 \smallskip
 
@@ -28,10 +29,10 @@ Los picos son generados de manera aleatoria, tanto su posición como su altura (
 \begin{algorithm}
 \begin{algorithmic}
 
-\ForAll{positions} 
+\ForAll{divisions} 
 	\ForAll{peaks} 
 		\Comment{se calcula la influencia de cada pico para cada posición}
-		\State influencia $\gets$ altura del pico - distancia del pico a la posición actual * ruggness.
+		\State influencia $\gets$ altura del pico - distancia del pico a la posición actual * ruggedness.
 	\EndFor
 	
 	\If{la posición no tiene influencia de nadie} 
@@ -52,8 +53,9 @@ Los picos son generados de manera aleatoria, tanto su posición como su altura (
 
 Quedando así en cada posición del terreno final el valor de 'promediar' todos los picos que tienen influencia sobre ella.
 
-\subsection{Versión de C}
-Está versión es muy sencilla ya que se puede mapear directamente el pseudocódigo a código, con pocas modificaciones. Luego basta con compilar utilizando las mejoras de sse para contar con las posibles mejoras SIMD que encuentre el compilador.
+La complejidad teórica del algoritmo es $\theta(divisions*peaks)$ ya que indefectiblemente se recorren ambos y el resto de las operaciones son $O(1)$.
 
-\newpage
+\subsection{Versión de C}
+Está versión es muy sencilla ya que se puede mapear directamente el pseudocódigo a código, con pocas modificaciones. Luego basta con compilar utilizando las mejoras de sse para contar con las herramientas de SIMD.
+
 \input{implementacionASM}
