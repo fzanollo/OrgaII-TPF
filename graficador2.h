@@ -120,7 +120,7 @@ class Graficador {
 			Sint16 puntosY[viewSize];
 
 		    puntosX[0] = 0;
-		    puntosY[0] = height-1;
+		    puntosY[0] = height;
 
 		    int terrainIndex = from;
 
@@ -135,8 +135,8 @@ class Graficador {
 		    	}
 		    }
 
-		    puntosX[viewSize-1] = width-1;	
-		    puntosY[viewSize-1] = height-1;
+		    puntosX[viewSize-1] = width;	
+		    puntosY[viewSize-1] = height;
 
 		    //filledPolygonRGBA (SDL_Renderer *renderer, const Sint16 *vx, const Sint16 *vy, int n, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 		    filledPolygonRGBA (renderer, puntosX, puntosY, viewSize, 128, 0, 0, 255);
