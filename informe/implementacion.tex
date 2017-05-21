@@ -1,4 +1,5 @@
 \section{Implementación}
+
 El método requiere de los siguientes datos de entrada:
 \begin{description}
 \item[divisions] cantidad de divisiones sobre la cuál se colocarán los picos.
@@ -8,6 +9,25 @@ El método requiere de los siguientes datos de entrada:
 \item[ruggedness] escabrosidad del terreno, es decir, qué tanto afecta un pico a sus posiciones aledañas.
 \end{description}
 \smallskip
+
+Lo que denominamos '\textbf{pico}', es un valor que será generado y ubicado aleatoriamente ocupando alguna de las posiciones posibles (divisions). Representa un punto de elevación en el terreno que luego el algoritmo se encargará de interpretar (en conjunto con la información del resto de los picos) para definir el valor definitivo que tendrá la elevación en cada punto del terreno.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{imagenes/Pico1}
+\caption{}
+\label{fig:Pico1}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{imagenes/pico2}
+	\caption{}
+	\label{fig:pico2}
+\end{figure}
+
+En la figura 1 podemos ver un terreno generado a partir de un único pico, como se puede apreciar el valor del pico se promedia con el suelo para obtener el terreno definitivo. Se observa también una zona de influencia del pico, es aquella en la cual el punto de elevación afecta en el cálculo final del terreno.
+
+
+El concepto de '\textbf{influencia}' de un pico podemos visualizarlo mejor en la figura 2. El terreno fue generado a partir de dos picos, existe una región  donde tenemos influencia por parte de ambos, es donde se forma una meseta ya que el algoritmo promedia la altura que tienen los picos en esa región. En el resto del terreno hay influencia de un sólo pico o ninguno.
 
 En nuestro caso también contamos con las siguientes entradas, las cuáles agregamos por razones de utilidad a la hora de experimentar y comparar las implementaciones de C y ASM.
 \begin{description}
