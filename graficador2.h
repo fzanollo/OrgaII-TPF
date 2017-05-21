@@ -31,7 +31,7 @@ class Graficador {
 			ancho = 10;
 			escala = 10;
 			width = 1024;
-			height = 768;
+			height = 300;
 
 			viewWidth = floor(width / ancho) + 3;
 
@@ -44,12 +44,12 @@ class Graficador {
 		    window = SDL_CreateWindow("SDL_CreateTexture",
 		                    SDL_WINDOWPOS_UNDEFINED,
 		                    SDL_WINDOWPOS_UNDEFINED,
-		                    1024, 768,
+		                    width, height,
 		                    SDL_WINDOW_RESIZABLE);
 
 		    renderer = SDL_CreateRenderer(window, -1, 0);
 
-		    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1024, 768);
+		    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
 		}
 
 		void graficar(vector<float> terrain){
