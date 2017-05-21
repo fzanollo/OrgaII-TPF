@@ -10,11 +10,11 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
-\renewcommand{\sectionmark}[1]{\markright{\thesection\ - #1}}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \fancyhf{}
 
-\fancyhead[LO]{Sección \rightmark} % \thesection\ 
 \fancyfoot[RO]{\thepage}
 \renewcommand{\headrulewidth}{0.5pt}
 \renewcommand{\footrulewidth}{0.5pt}
@@ -27,7 +27,6 @@
 \setlength{\headheight}{13.1pt}
 
 \renewcommand{\baselinestretch}{1.1}  % line spacing
-
 
 \begin{document}
 
@@ -43,7 +42,13 @@
 
 	\input{introduccion}
 	\newpage
-		
-	\input{2D/2D}
+	
+	\input{implementacion}
+	\newpage
+	
+	\input{experimentacionyresultados}
+	\newpage	
+	
+	\input{conclusionymejoras}
 	
 \end{document}

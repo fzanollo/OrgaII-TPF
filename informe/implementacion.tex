@@ -1,0 +1,61 @@
+\section{Implementación}
+El método requiere de los siguientes datos de entrada:
+\begin{description}
+\item[divisions] cantidad de divisiones sobre la cuál se colocarán los picos.
+\item[nroPeaks] cantidad total de picos.
+\item[yMin] altura mínima permitida de un pico.
+\item[yMin] altura máxima permitida de un pico.
+\item[ruggedness] escabrosidad del terreno, es decir, qué tanto afecta un pico a sus posiciones aledañas.
+\end{description}
+\smallskip
+
+En nuestro caso también contamos con las siguientes entradas, las cuáles agregamos por razones de utilidad a la hora de experimentar y comparar las implementaciones de C y ASM.
+\begin{description}
+\item[seed] permite setear una semilla particular para el random, esto es para lograr el mismo gráfico y poder experimentar con datos más certeros.
+\item[debugging] si una semilla es proporcionada entonces se le puede decir al programa que entre en modo verbouse; el cuál nos va a dar, además del gráfico, el valor numérico de cada posición del terrreno final y la posición y tamaño original de cada pico.
+\end{description}
+\smallskip
+
+Para poder llevar a cabo el método vamos a estar utilizando las siguientes estructuras:
+\begin{description}
+\item[peaksPos] arreglo con nroPeaks posiciones, cada una contiene la posición dentro del terreno de dicho pico. Las posiciones van de 0 a divisions-1.
+\item[peaksSize] arreglo con nroPeaks posiciones, cada una contiene la altura de dicho pico. Las alturas posible están entre yMin e yMax (inclusive en ambos casos).
+\item[terrain] vector con los valores numéricos finales de cada posición del terreno.
+\end{description}
+\smallskip
+
+Los picos son generados de manera aleatoria, tanto su posición como su altura (dentro de los límites explicados más arriba). Luego se hace lo siguiente:
+
+\begin{algorithm}
+\begin{algorithmic}
+
+\ForAll{divisions} 
+	\ForAll{peaks} 
+		\Comment{se calcula la influencia de cada pico para cada posición}
+		\State influencia $\gets$ altura del pico - distancia del pico a la posición actual * ruggedness.
+	\EndFor
+	
+	\If{la posición no tiene influencia de nadie} 
+		\State valor final de la posición $\gets$ 0.
+	
+	\ElsIf{la posición solo es influenciada por un pico} 
+		\State valor final de la posición $\gets$ influencia / 2.
+	
+	\ElsIf{la posición es influenciada por dos o más picos}
+		\State valor final de la posición $\gets$ influencia / cantidad de picos con influencia sobre ella.
+		
+	\EndIf
+
+\EndFor
+
+\end{algorithmic}
+\end{algorithm}
+
+Quedando así en cada posición del terreno final el valor de 'promediar' todos los picos que tienen influencia sobre ella.
+
+La complejidad teórica del algoritmo es $\theta(divisions*peaks)$ ya que indefectiblemente se recorren ambos y el resto de las operaciones son $O(1)$.
+
+\subsection{Versión de C}
+Está versión es muy sencilla ya que se puede mapear directamente el pseudocódigo a código, con pocas modificaciones. Luego basta con compilar utilizando las mejoras de sse para contar con las herramientas de SIMD.
+
+\input{implementacionASM}
