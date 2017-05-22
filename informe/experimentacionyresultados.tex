@@ -2,7 +2,9 @@
 
 Al experimentar siempre es de suma importancia elegir los casos de prueba. Como es un algoritmo que depende de una semilla random lo primero que decidimos fue dejarla fija, para que las sucesivas ejecuciones fuesen de la misma naturaleza. El algoritmo es de complejidad lineal respecto de divisiones por cantidad de picos, por ende al experimentar probamos diferentes combinaciones de los mismos.\\
 
-Basandonos solo en la teoría, en un comienzo suponíamos una mejora en la performance de ASM cercana a 16 veces la de C. Llegamos a ese número partiendo de que, si C no tenía ninguna mejora iba a poseer la complejidad teórica de divisiones por cantidad de picos; mientras que nuestro ASM recorría tanto las divisiones como los picos de a cuatro, si consideramos esto nos queda $divisiones/4 * picos/4$. Esta complejidad es del mismo orden de grado (lineal) modificada solo por la constante $1/16$, presentando así una mejora del 93.75$\%$.
+Basandonos solo en la teoría, en un comienzo suponíamos una mejora en la performance de ASM cercana a 16 veces la de C. Llegamos a ese número partiendo de que, si C no tenía ninguna mejora iba a poseer la complejidad teórica de divisiones por cantidad de picos; mientras que nuestro ASM recorría tanto las divisiones como los picos de a cuatro, si consideramos esto nos queda $divisiones/4 * picos/4$. Esta complejidad es del mismo orden de grado (lineal) modificada solo por la constante $1/16$, presentando así una mejora del 93.75$\%$.\\
+
+Para la recolección de datos utilizamos la librería Nonius\footnote{\url{https://nonius.io/}} que toma varias muestras, corriendolas muchas veces y procesa los resultados eliminando outliers. Las pruebas fueron corridas sobre un procesador Intel$^{®}$ Core™ i5-6200U\footnote{\url{https://ark.intel.com/es-es/products/88193/Intel-Core-i5-6200U-Processor-3M-Cache-up-to-2_80-GHz}}.
 
 \subsection{Misma cantidad de picos, distintas divisiones}
 Como primer experimento fijamos la cantidad de picos y fuimos aumentando las divisiones.

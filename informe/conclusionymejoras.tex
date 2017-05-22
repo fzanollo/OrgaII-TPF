@@ -1,7 +1,16 @@
 \section{Conclusión}
+Pudimos comprobar que nuestra implementación presentó una mejora considerable en cuanto al tiempo de procesamiento, en promedio del 80$\%$. Difiere de la estimación teórica que habíamos calculado por diversos factores, entre ellos:
+\begin{itemize}
+\item La optimización del código de C hecha por el compilador.
+\item Las variaciones y errores que puede haber a la hora de medir los tiempos de procesamiento.
+\item La omición de algún detalle en cuanto a la implementación que resulte en una desventaja.
+\end{itemize}
 
+Hablando de los gráficos utilizables en la práctica, estos representan un subconjunto de los casos que utilizamos para las pruebas. Por tanto los resultados mostrados tienen precedencia en la realidad.\\
+ 
+En particular serían aquellos que tienen una relación de por lo menos 1 pico cada 10 divisiones, considerando en la cantidad a colocar la variación de tamaños de los picos. Ya que si se utilizan alturas muy grandes en generaciones chicas puede quedar un terreno no deseado.
 
 \subsection{Mejoras}
-Si se tiene en cuenta los valores máximos de cada división se podría llegar a utilizar enteros de menor tamaño para poder procesar de a más cantidad de datos. Por ejemplo si se usan enteros de 2Bytes se puede procesar hasta de a ocho por registro xmm.
+Si se tiene en cuenta los valores máximos de cada división se podría llegar a utilizar enteros de menor tamaño para poder procesar de a más cantidad de datos. Por ejemplo si se usan enteros de 2Bytes se puede procesar hasta de a ocho por registro xmm.\\
 
-Se podría hacer la versión 3D. La complejidad en cuanto al algoritmo e implementación no es muy elevada, sí nos pareció complicado dibujar el terreno generado, ya que deberíamos usar herramientas de SDL que no tenemos muy claras, por esa cuestión y la falta de tiempo para aprenderlas decidimos incluir en este trabajo solo la versión 2D.
+Se podría hacer la versión 3D. La complejidad en cuanto al algoritmo e implementación no es muy elevada, sí nos pareció complicado dibujar el terreno generado, ya que deberíamos usar herramientas de SDL que no tenemos muy claras. Por esa cuestión y la falta de tiempo para aprenderlas decidimos incluir en este trabajo solo la versión 2D.
