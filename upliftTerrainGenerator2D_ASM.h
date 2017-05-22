@@ -14,12 +14,12 @@ using namespace std;
 	nroPeaks: cantidad de picos
 	yMin: altura minima de los picos
 	yMax: altura maxima de los picos
-	steepness: ?
+	ruggedness: escarpado del terreno
 */
 class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 	void doTheMath(int divisions, int nroPeaks, int peaksPos [], int peaksSize [], int ruggedness){
 
-		float *terrainArray = new float[divisions] ;
+		float terrainArray[divisions];
  
 
 		fun(peaksPos, peaksSize, nroPeaks, divisions, terrainArray, ruggedness);
@@ -29,7 +29,6 @@ class UpliftTerrainGenerator2D_ASM: public UpliftTerrainGenerator2D {
 			terrain.push_back(terrainArray[i]);
 		}
 		
-		delete terrainArray;
 	}
 };
 
