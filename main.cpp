@@ -3,8 +3,7 @@
 #include <vector>
 #include <string.h>
 #include "graficador2.h"
-#include "upliftTerrainGenerator2D_C.h"
-#include "upliftTerrainGenerator2D_ASM.h"
+#include "upliftTerrainGenerator2D.h"
 
 #include <time.h>
 
